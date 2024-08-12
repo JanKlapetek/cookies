@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Příklad s cookies</title>
+</head>
+<body>
+    <h1>Práce s cookies v JavaScriptu</h1>
+    <button onclick="setCookieWithExpires('uzivatel', 'Jan', 7)">Nastavit cookie s expires</button>
+    <button onclick="setCookieWithMaxAge('uzivatel', 'Jan', 60)">Nastavit cookie s max-age</button>
+    <button onclick="displayCookies()">Zobrazit cookies</button>
+    <div id="cookieDisplay"></div>
+
+    <script>
+        function setCookieWithExpires(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+            console.log("Nastavená cookie s expires: " + document.cookie);
+        }
+
+        function setCookieWithMaxAge(name, value, maxAgeSeconds) {
+            const maxAge = "max-age=" + maxAgeSeconds;
+            document.cookie = name + "=" + encodeURIComponent(value) + ";" + maxAge + ";path=/";
+            console.log("Nastavená cookie s max-age: " + document.cookie);
+        }
+
+        function getAllCookies() {
+            const decodedCookie = decodeURIComponent(document.cookie);
+            return decodedCookie.split(';').map(cookie => cookie.trim());
+        }
+
+        function displayCookies() {
+            const cookies = getAllCookies();
+            const cookieDisplayDiv = document.getElementById('cookieDisplay');
+            cookieDisplayDiv.innerHTML = '<h2>Aktuální cookies:</h2><ul>' + cookies.map(cookie => '<li>' + cookie + '</li>').join('') + '</ul>';
+        }
+    </script>
+</body>
+</html>
